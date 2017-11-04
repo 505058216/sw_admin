@@ -14,8 +14,8 @@ use service\FileService;
 use service\NodeService;
 use service\SoapService;
 use think\Db;
-use Wechat\Loader;
-
+use wechatSdk\Wechat;
+use wechatSdk\Api;
 /**
  * 打印输出数据到文件
  * @param mixed $data
@@ -187,4 +187,47 @@ function convertHump(array $data){
         }
     }
     return $result;
+}
+
+/**
+ *  获取微信实例
+ * @var string
+ */
+function getWechat(){
+    // wechat模块 - 处理用户发送的消息和回复消息
+    $wechat = new Wechat(array(
+        'appId' => config('appId'),
+        'token' => 	config('token'),
+        'encodingAESKey' =>	config('encodingAESKey') //可选
+    ));
+    return $wechat;
+}
+
+/**
+ * 获取微信实例API
+ * @var string
+ */
+function getWechatApi(){
+    // api模块 - 包含各种系统主动发起的功能
+    $api = new Api(
+        array(
+            'appId' => config('appId'),
+            'appSecret'	=> config('appSecret'),
+            'mchId' => config('mchId'),
+            'key' => config('wechatKey'),
+            'get_access_token' => function(){
+                return cache('wechat_token');
+            },
+            'save_access_token' => function($token) {
+                cache('wechat_token', $token);
+            },
+            'get_jsapi_ticket' => function() {
+                return cache('jsapi_ticket');
+            },
+            'save_jsapi_ticket' => function($jsapi_ticket) {
+                cache('jsapi_ticket', $jsapi_ticket);
+            }
+        )
+    );
+    return $api;
 }

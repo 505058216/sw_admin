@@ -1,0 +1,65 @@
+{extend name='common/content'}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    <button onclick="handle('backup')" data-title="备份数据库" class='layui-btn layui-btn-small handle'><i
+            class='fa fa-plus'></i> 备份数据库
+    </button>
+</div>
+{/block}
+{block name="content"}
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+        <tr>
+            <th class='text-center'>序号</th>
+            <th class='text-center'>备份名称</th>
+            <th class='text-center'>备份时间</th>
+            <th class='text-center'>备份大小</th>
+            <th class='text-center'>操作</th></tr>
+        </thead>
+        <tbody>
+        {volist name="list" id="vo"}
+        <tr>
+            <td class='text-center'>{$key}</td>
+            <td class='text-center'>{$vo.name}</td>
+            <td class='text-center'>{$vo.time}</td>
+            <td class='text-center'>{$vo.size}</td>
+            <td class="text-center">
+                <a href="{:url('index',['tp'=>'dowonload','name'=>$vo.name])}"  title="下载">
+                    下载
+                </a>
+                <span class="text-explode"></span>
+                <a onclick="handle('restore','{$vo.name}')" href="javascript:;"  title="还原">
+                    还原
+                </a>
+                <span class="text-explode"></span>
+                <a title="删除"  onclick="handle('del','{$vo.name}')"  href="javascript:;">
+                    删除
+                </a>
+            </td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {/if}
+    <script>
+        function handle(tp,name = ''){
+            if (tp){
+                $.HttpPost("{:url('index')}",{tp:tp,name:name},function(response){
+                    if (response){
+                        layer.msg(response,function(){
+                            $.form.reload();
+                        });
+                    }else{
+                        layer.msg("操作失败，请重试!!");
+                    }
+                });
+            }
+        }
+    </script>
+{/block}

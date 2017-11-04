@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>SWCMS安装程序</title>
+    <link href="__STATIC__/install/css/install.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/install/js/jquery.js"></script>
+    <link href="__STATIC__/install/css/perfect-scrollbar.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/install/js/perfect-scrollbar.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/install/js/jquery.mousewheel.js"></script>
+    <script type="text/javascript">
+        var scroll_height = 0;
+        function showmessage(message) {
+            document.getElementById('license').innerHTML += message+"<br/>";
+            document.getElementById("text-box").scrollTop = 500+scroll_height;
+            scroll_height += 40;
+        }
+        $(document).ready(function(){
+            //自定义滚定条
+            $('#text-box').perfectScrollbar();
+        });
+    </script>
+</head>
+
+<body>
+<div class="header">
+    <div class="layout">
+        <div class="title">
+            <h2>系统安装向导</h2>
+        </div>
+        <div class="version">版本: 目前最新版</div>
+    </div>
+</div>
+<div class="main">
+    <div class="step-box" id="step4">
+        <div class="text-nav">
+            <h1>Step.3</h1>
+            <h2>安装数据库</h2>
+            <h5>正在执行数据库安装</h5>
+        </div>
+        <div class="procedure-nav">
+            <div class="schedule-ico"><span class="a"></span><span class="c"></span><span class="d"></span></div>
+            <div class="schedule-point-now"><span class="a"></span><span class="c"></span><span class="d"></span></div>
+            <div class="schedule-point-bg"><span class="a"></span><span class="c"></span><span class="d"></span></div>
+            <div class="schedule-line-now"><em></em></div>
+            <div class="schedule-line-bg"></div>
+            <div class="schedule-text"><span class="a">检查安装环境</span><span class="c">创建数据库</span><span class="d">安装</span></div>
+        </div>
+    </div>
+    <div class="text-box" id="text-box">
+        <div class="license" id="show-list">
+        </div>
+    <div class="btn-box">
+        <a href="javascript:void(0);" id="install_process" class="btn btn-primary">正在安装 ...</a>
+    </div>
+</div>
+<div class="footer">
+    <h6>
+        <a href="http://www.scshunwei.com" target="_blank">绵阳顺为科技有限公司版权所有</a>
+    </h6>
+</div>
+</body>
+<script type="text/javascript">
+    var list   = document.getElementById('show-list');
+    function showmsg(msg, classname){
+        var li = document.createElement('p');
+        li.innerHTML = msg;
+        classname && li.setAttribute('class', classname);
+        list.appendChild(li);
+        document.scrollTop += 30;
+    }
+    function success(){
+        var install = document.getElementById('install_process');
+        install.innerHTML = '安装完成';
+        install.href = "{:url('/admin')}";
+    }
+</script>
+{php}
+
+{/php}
+</html>

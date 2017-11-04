@@ -1,0 +1,117 @@
+{extend name='common/content'}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    {if auth("$classuri/add")}
+        <button data-modal='{:url("$classuri/add",array('modelid'=>input('modelid')))}' data-title="添加字段" class='layui-btn layui-btn-small'><i
+                class='fa fa-plus'></i> 添加字段
+        </button>
+    {/if}
+    {if auth("$classuri/del")}
+        <button data-update data-field='delete' data-action='{:url("$classuri/del")}'
+                class='layui-btn layui-btn-small layui-btn-danger'><i class='fa fa-remove'></i> 删除字段
+        </button>
+    {/if}
+</div>
+{/block}
+{block name="content"}
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+        <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+        <input type="hidden" value="resort" name="action"/>
+        <table class="layui-table" lay-skin="line" lay-size="sm">
+            <tr>
+                <th class='list-table-check-td'>
+                    <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+                </th>
+                <th class='list-table-sort-td'>
+                    <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
+                </th>
+                <th class='text-center'>名称</th>
+                <th class='text-center'>字段名</th>
+                <th class='text-center'>系统</th>
+                <th class='text-center'>唯一</th>
+                <th class='text-center'>基本字段</th>
+                <th class='text-center'>列表显示</th>
+                <th class='text-center'>状态</th>
+                <th class='text-center'>操作</th>
+            </tr>
+            {foreach $list as $key=>$vo}
+                <tr>
+                    <td class='list-table-check-td'>
+                        <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                    </td>
+                    <td class='list-table-sort-td'>
+                        <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
+                    </td>
+                    <td class='text-center'>{$vo.name}</td>
+                    <td class='text-center'>{$vo.field}</td>
+                    <td class='text-center'>
+                        {if $vo.issystem eq 0}
+                            <i class="fa fa-close red"></i>
+                        {else}
+                            <i class="fa fa-check red"></i>
+                        {/if}
+                    </td>
+                    <td class='text-center'>
+                        {if $vo.isunique eq 0}
+                            <i class="fa fa-close red"></i>
+                        {else}
+                            <i class="fa fa-check red"></i>
+                        {/if}
+                    </td>
+                    <td class='text-center'>
+                        {if $vo.isbase eq 0}
+                            <i class="fa fa-close red"></i>
+                        {else}
+                            <i class="fa fa-check red"></i>
+                        {/if}
+                    </td>
+                    <td class='text-center'>
+                        {if $vo.islist eq 0}
+                            <i class="fa fa-close red"></i>
+                        {else}
+                            <i class="fa fa-check red"></i>
+                        {/if}
+                    </td>
+                    <td class='text-center'>
+                        {if $vo.status eq 1}
+                            <i class="fa fa-close red"></i>
+                        {else}
+                            <i class="fa fa-check red"></i>
+                        {/if}
+                    </td>
+                    <td class="text-center">
+
+                        {if auth("$classuri/status")}
+                        <span class="text-explode"></span>
+                        <a class="i-action" data-update="{$vo.id}" data-field='status' data-value='{if $vo.status eq 1}0{else}1{/if}' data-action='{:url("$classuri/status")}'
+                           href="javascript:;" title="{if $vo.status eq 1}启用{else}禁用{/if}">
+                            {if $vo.status eq 0}
+                                <i class="fa fa-check"></i>
+                            {elseif $vo.status eq 1}
+                                <i class="fa fa-close"></i>
+                            {/if}
+                        </a>
+                        {/if}
+
+                        {if auth("$classuri/edit")}
+                        <span class="text-explode"></span>
+                        <a class="i-action" data-modal="{:url("$classuri/edit",array('id'=>$vo.id))}" href="javascript:;" title="编辑">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        {/if}
+
+                        {if auth("$classuri/del")}
+                        <span class="text-explode"></span>
+                        <a class="i-action" data-update="{$vo.id}" data-field='delete' data-action='{:url("$classuri/del")}' title="删除" href="javascript:;" onclick="system_data_del(this,'{$vo.id}')">
+                        <i class="fa fa-trash-o"></i>
+                        </a>
+                        {/if}
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
+    {/if}
+{/block}

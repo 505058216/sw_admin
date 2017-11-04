@@ -1,0 +1,1 @@
+<input value="decimal" type="hidden" name="setting[fieldtype]" />

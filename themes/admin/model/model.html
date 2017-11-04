@@ -1,0 +1,107 @@
+{extend name='common/content'}
+
+{block name="button"}
+<div class="nowrap pull-right" style="margin-top:10px">
+    {if auth("$classuri/add")}
+        <button data-modal='{:url("$classuri/add")}' data-title="添加模型" class='layui-btn layui-btn-small'><i
+                class='fa fa-plus'></i> 添加模型
+        </button>
+    {/if}
+</div>
+{/block}
+
+{block name="content"}
+<form onsubmit="return false;" data-auto="true" method="post">
+    {if empty($list)}
+        <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <input type="hidden" value="resort" name="action"/>
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <tr>
+            <th class='list-table-check-td'>
+                <input data-none-auto="" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="submit" class="layui-btn layui-btn-normal layui-btn-mini">排 序</button>
+            </th>
+            <th class='text-center'>名称</th>
+            <th class='text-center'>模型名</th>
+            <th class='text-center'>说明</th>
+            <th class='text-center'>模型类别</th>
+            <th class='text-center'>状态</th>
+            <th class='text-center'>操作</th>
+        </tr>
+        {foreach $list as $key=>$vo}
+            </tr>
+                <td class='list-table-check-td'>
+                    <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+                </td>
+                <td class='list-table-sort-td'>
+                    <input name="_{$vo.id}" value="{$vo.sort}" class="list-sort-input"/>
+                </td>
+                <td class='text-center'>{$vo.name}</td>
+                <td class='text-center'>{$vo.tablename}</td>
+                <td class='text-center'>{$vo.description|default="<span style='color:#ccc'>没有写描述哦！</span>"}</td>
+                <td class='text-center'>
+                    {if $vo.issys eq 0}
+                        <span class="label label-success radius">用户模型</span>
+                    {else}
+                        <span class="label label-danger radius">系统模型</span>
+                    {/if}
+                </td>
+                <td class='text-center'>
+                    {if $vo.status eq 1}
+                        <span class="label label-success radius">已禁用</span>
+                    {elseif $vo.status eq 0}
+                        <span class="label label-danger radius">使用中</span>
+                    {/if}
+                </td>
+                <td class="text-center">
+                    {if auth("field/index")}
+                        <span class="text-explode"></span>
+                        <a class="i-action" data-open="{:url('field/index',array('modelid'=>$vo.id))}" title="字段管理">
+                            <i class="fa fa-navicon"></i>
+                        </a>
+                    {/if}
+                    {if auth("$classuri/generate")}
+                        <span class="text-explode"></span>
+                        <a class="i-action" data-update="{$vo.id}" data-msg="确定删除该模型吗？该操作将会覆盖原有控制器，请谨慎操作！" data-field='update' data-value='{$vo.id}' data-action='{:url("$classuri/generate")}' href="javascript:;" title="生成模型">
+                            <i class="fa fa-save"></i>
+                        </a>
+                    {/if}
+
+                    {if auth("$classuri/status")}
+                        <span class="text-explode"></span>
+                        {if $vo.status eq 1}
+                            <a class="i-action" data-update="{$vo.id}" data-msg="确定要启用该模型吗？" data-field='status' data-value='0' data-action='{:url("$classuri/status")}'
+                               href="javascript:;" title="启用">
+                                <i class="fa fa-close"></i>
+                            </a>
+                        {elseif $vo.status eq 0}
+                            <a class="i-action" data-update="{$vo.id}" data-msg="确定要禁用该模型吗？" data-field='status' data-value='1' data-action='{:url("$classuri/status")}'
+                               href="javascript:;" title="禁用">
+                                <i class="fa fa-check"></i>
+                            </a>
+                        {/if}
+                    {/if}
+
+                    {if auth("$classuri/edit")}
+                        <span class="text-explode"></span>
+                        <a class="i-action" data-modal="{:url("$classuri/edit")}?id={$vo.id}" href="javascript:;" title="编辑">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                    {/if}
+                    {if auth("$classuri/del")}
+                        <span class="text-explode"></span>
+                        <a data-update="{$vo.id}" title="删除" data-field='delete' data-action='{:url("$classuri/del")}' href="javascript:void(0)">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    {/if}
+                </td>
+            </tr>
+        {/foreach}
+    </table>
+    {/if}
+    {if isset($page)}<p>{$page}</p>{/if}
+</form>
+{/block}

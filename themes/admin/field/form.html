@@ -1,0 +1,169 @@
+<form class="layui-form layui-box" style='padding:25px 30px 20px 0' action="__SELF__" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">字段类型</label>
+        <div class="layui-input-block">
+            <select name='formtype' class='layui-select full-width field-select' required="required" style='display:block'>
+                {foreach name="fields['fields']" item="field" key="k"}
+                    <option {eq name='$k' value='$vo.formtype|default="null"'}selected{/eq} value="{$k}" >{$field}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">字段别名</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" required="required" minlength="2" maxlength="10" title="模型菜单名称至少2个字符,最多10个字符！" placeholder="模型菜单名称 例如：文章标题" value="{$vo.name|default=''}" class="layui-input typeahead">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">字段名</label>
+        <div class="layui-input-block">
+            <input type="text" name="field" required="required" minlength="4" maxlength="16" title="请输入4-16位英文模型名称！只能由英文字母、数字和下划线组成，并且仅能字母开头，不以下划线结尾" placeholder="字段名" value="{$vo.field|default=''}" class="layui-input typeahead">
+        </div>
+    </div>
+
+    <div class="setting">
+
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">表单附加属性</label>
+        <div class="layui-input-block">
+            <textarea name="formattribute" placeholder="可以通过此处加入javascript事件" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">表单样式名</label>
+        <div class="layui-input-block">
+            <input type="text" name="css" title="表单样式名" placeholder="表单样式名" value="{$vo.css|default=''}" class="layui-input typeahead">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">字符长度取值范围</label>
+        <div class="layui-input-inline">
+            <input type="text" name="minlength" value="{$vo.minlength|default=''}" placeholder="最小值" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <input type="text" name="maxlength" value="{$vo.maxlength|default=''}"  placeholder="最大值" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">数据校验正则</label>
+        <div class="layui-input-inline">
+            <input type="text" name="pattern" placeholder="数据校验正则" autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-input-inline">
+            <select onclick="$(this).change(function(){$('input[name=pattern]').val($(this).val())});" class='layui-select full-width' required="required" style='display:block'>
+                <option value="">正则</option>
+                {foreach name="pattern" item="item" key="k" }
+                <option value="{$item}">{$k}</option>
+                {/foreach}
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">值唯一</label>
+        <div class="layui-input-block">
+            <select name='isunique' class='layui-select full-width' required="required" style='display:block'>
+                <option {eq name='0' value='$vo.isunique|default=5'}selected{/eq} value="0" >否</option>
+                <option {eq name='1' value='$vo.isunique|default=0'}selected{/eq} value="1" >是</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">作为基本信息</label>
+        <div class="layui-input-block">
+            <select name='isbase' class='layui-select full-width' required="required" style='display:block'>
+                <option {eq name='0' value='$vo.isbase|default=5'}selected{/eq} value="0" >否</option>
+                <option {eq name='1' value='$vo.isbase|default=0'}selected{/eq} value="1" >是</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">作为搜索条件</label>
+        <div class="layui-input-block">
+            <select name='issearch' class='layui-select full-width' required="required" style='display:block'>
+                <option {eq name='0' value='$vo.issearch|default=5'}selected{/eq} value="0" >否</option>
+                <option {eq name='1' value='$vo.issearch|default=0'}selected{/eq} value="1" >是</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示在列表页</label>
+        <div class="layui-input-block">
+            <select name='islist' class='layui-select full-width' required="required" style='display:block'>
+                <option {eq name='0' value='$vo.islist|default=5'}selected{/eq} value="0" >否</option>
+                <option {eq name='1' value='$vo.islist|default=0'}selected{/eq} value="1" >是</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否隐藏</label>
+        <div class="layui-input-block">
+            <select name='isdisabled' class='layui-select full-width' required="required" style='display:block'>
+                <option {eq name='0' value='$vo.isdisabled|default=5'}selected{/eq} value="0" >否</option>
+                <option {eq name='1' value='$vo.isdisabled|default=0'}selected{/eq} value="1" >是</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">预留字段</label>
+        <div class="layui-input-block">
+            <select name='iscore' class='layui-select full-width' required="required" style='display:block'>
+                <option {eq name='0' value='$vo.iscore|default=5'}selected{/eq} value="0" >否</option>
+                <option {eq name='1' value='$vo.iscore|default=0'}selected{/eq} value="1" >是</option>
+            </select>
+        </div>
+    </div>
+    {if isset($vo['modelid'])}
+        <input type='hidden' value='{$vo.modelid}' name='modelid'/>
+    {else}
+        <input value="{:input('modelid')}" name="modelid" type="hidden" />
+    {/if}
+    {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'/>{/if}
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+</form>
+<script type="text/javascript">
+    $(function () {
+        var id = "{:input('id','')}";
+        //获取字段表单
+        $('.field-select').change(function(){
+            getField($(this).val());
+        });
+        //加载字段
+        function getField(val){
+            $.HttpPost('{:url("getFieldPost")}',{'field':val,'id':id},function(data){
+                if( data.code == 1 ){
+                    data = data.msg;
+//                    $('select[name=issearch]>option').eq(data.field_allow_search).attr("selected",true);
+//                    $('select[name=isunique]>option').eq(data.field_allow_search).attr("selected",true);
+//                    $('input[name=minlength]').val(data.field_minlength);
+//                    $('input[name=maxlength]').val(data.field_maxlength);
+                    $('.setting').html(data.form);
+                }else{
+                    layer.msg('服务器错误');
+                }
+            });
+        }
+        {if isset($vo['id'])}
+            getField('{$vo.formtype|default=""}');
+        {else}
+            getField('text');
+        {/if}
+    });
+</script>
